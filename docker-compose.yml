@@ -2,13 +2,21 @@ version: "3.8"
 
 services:
   db:
-    image: mysql
+    container_name: django-docker-db
+    image: mysql:5.7
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: mysql
       MYSQL_DATABASE: develop
       MYSQL_USER: django
       MYSQL_PASSWORD: password
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
   web:
+    container_name: django-docker
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     tty: true
